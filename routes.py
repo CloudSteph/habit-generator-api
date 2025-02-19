@@ -5,7 +5,8 @@ routes.py - Defines FastAPI routes for handling habit operations.
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-import crud, schemas
+import crud
+import schemas
 
 router = APIRouter()
 
@@ -24,7 +25,7 @@ def create_habit(habit_data: schemas.HabitCreate, db: Session = Depends(get_db))
     """
     return crud.create_habit(db, habit_data)
 
-@router.get("/habit/", response_model=list[schemas.HabitResponse])
+@router.get("/habits/", response_model=list[schemas.HabitResponse])
 def get_habits(db: Session = Depends(get_db)):
     """
     Endpoint to retrieve all habits.
