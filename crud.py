@@ -5,7 +5,7 @@ crud.py - Handles database operations (CRUD) for habits.
 import random
 from sqlalchemy.orm import Session
 from models import Habit
-from schemas import HabitCreate
+from schemas import HabitCreate, HabitResponse
 
 def create_habit(db: Session, habit_data: HabitCreate):
     """
@@ -58,7 +58,7 @@ def delete_habit(db: Session, habit_id: int):
         db.commit()
     return habit
 
-def get_random_habits(db: Session):
+def get_random_habit(db: Session) -> HabitResponse | None:
     """
     Retrieves a random habit, prioritizing habits that:
     - Have not been completed today.
@@ -92,4 +92,6 @@ def get_random_habits(db: Session):
         weighted_habits.extend([habit] * weight) # Add habit multiple times for weighting 
 
     # Randomly select one habit based on weight
-    return random.choice(weighted_habits)
+    selected_habit = random.choice(weighted_habits)
+
+    return selected_habit
