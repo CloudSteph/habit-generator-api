@@ -18,6 +18,16 @@ def get_db():
     finally:
         db.close()
 
+@router.get("/habits/random", response_model=schemas.HabitResponse)
+def get_random_habit(db: Session = Depends(get_db)):
+    """
+    Endpoint to retrieve a random habit based on priority logic.
+    """
+    habit = crud.get_random_habit(db)
+    if habit is None:
+        raise HTTPException(status_code=404, detail="No habits found")
+    return habit
+
 @router.post("/habits/", response_model=schemas.HabitResponse)
 def create_habit(habit_data: schemas.HabitCreate, db: Session = Depends(get_db)):
     """
