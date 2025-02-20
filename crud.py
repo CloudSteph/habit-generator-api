@@ -2,6 +2,7 @@
 crud.py - Handles database operations (CRUD) for habits.
 """
 
+import random
 from sqlalchemy.orm import Session
 from models import Habit
 from schemas import HabitCreate
@@ -56,3 +57,39 @@ def delete_habit(db: Session, habit_id: int):
         db.delete(habit)
         db.commit()
     return habit
+
+def get_random_habits(db: Session):
+    """
+    Retrieves a random habit, prioritizing habits that:
+    - Have not been completed today.
+    - Appear more frequently.
+    """
+
+    # Fetch all habits
+    habits = db.query(Habit).all()
+
+    # If there are no habits, return None
+    if not habits:
+        return None
+    
+    # Filter habits that have NOT been completed today
+    available_habits = [habit for habit in habits if not habit.completed_today]
+
+    # If all habits are completed today, allow selection from all habits
+    if not available_habits:
+        available_habits = habits
+
+    # Weighting logic: Higher weight for lower streaks and higher frequency
+    weighted_habits = []
+    for habit in available_habits:
+        weight = max(1, 5 - habit.streak) # Prioritize habits with lower streaks
+
+        if habit.frequency == "daily":
+            weight *= 3 # Daily habits appear more frequently
+        elif habit.frequency == "weekly":
+            weight *= 2 # weekly habits have medium priority
+        
+        weighted_habits.extend([habit] * weight) # Add habit multiple times for weighting 
+
+    # Randomly select one habit based on weight
+    return random.choice(weighted_habits)
