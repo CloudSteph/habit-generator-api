@@ -109,5 +109,9 @@ def reset_completed_today(db: Session):
     """
     Resets 'completed_today' to False for all habits every morning.
     """
-    db.query(Habit).update({"completed_today": False})
-    db.commit()
+    try:
+        db.query(Habit).update({"completed_today": False})
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise Exception(f"Database error during reset: {e}")
