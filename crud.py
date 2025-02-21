@@ -60,9 +60,9 @@ def delete_habit(db: Session, habit_id: int):
 
 def get_random_habit(db: Session) -> HabitResponse | None:
     """
-    Retrieves a random habit, prioritizing habits that:
-    - Have not been completed today.
-    - Appear more frequently.
+    Retrieves a random habit, marks it as completed, and updates the streak.
+    - 'completed_today' is set to 'True'
+    - 'streak' is increased by 1
     """
 
     # Fetch all habits
@@ -94,4 +94,12 @@ def get_random_habit(db: Session) -> HabitResponse | None:
     # Randomly select one habit based on weight
     selected_habit = random.choice(weighted_habits)
 
-    return selected_habit
+    # Update the selected habit as completed and increase streak
+    selected_habit.completed_today = True
+    selected_habit.streak += 1
+
+    # Save changes to the database
+    db.commit()
+    db.refresh(selected_habit)
+
+    return selected_habit # Return updated habit
