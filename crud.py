@@ -6,6 +6,7 @@ import random
 from sqlalchemy.orm import Session
 from models import Habit
 from schemas import HabitCreate, HabitResponse
+from datetime import datetime, timedelta
 
 def create_habit(db: Session, habit_data: HabitCreate):
     """
@@ -103,3 +104,10 @@ def get_random_habit(db: Session) -> HabitResponse | None:
     db.refresh(selected_habit)
 
     return selected_habit # Return updated habit
+
+def reset_completed_today(db: Session):
+    """
+    Resets 'completed_today' to False for all habits every morning.
+    """
+    db.query(Habit).update({"completed_today": False})
+    db.commit()

@@ -18,7 +18,7 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/habits/random", response_model=schemas.HabitResponse)
+@router.get("/habits/random")
 def get_random_habit(db: Session = Depends(get_db)):
     """
     Endpoint to retrieve a random habit based on priority logic.
@@ -27,6 +27,14 @@ def get_random_habit(db: Session = Depends(get_db)):
     if habit is None:
         raise HTTPException(status_code=404, detail="No habits found")
     return habit
+
+@router.post("/habits/reset")
+def reset_habits(db: Session = Depends(get_db)):
+    """
+    Endpoint to reset 'completed_today' for all habits.
+    """
+    crud.reset_completed_today(db)
+    return {"message": "All habits reset for the new day!"}
 
 @router.post("/habits/", response_model=schemas.HabitResponse)
 def create_habit(habit_data: schemas.HabitCreate, db: Session = Depends(get_db)):
