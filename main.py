@@ -9,7 +9,10 @@ import crud
 from routes import router
 
 # Initalize FastAPI app
-app = FastAPI(title="Randomized Habit Generator API")
+app = FastAPI(title="Randomized Habit Generator API",
+              description="An API to track and manage habits with random selection and automation.",
+              version="1.0.0"
+              )
 
 # Include habit routes from 'routes.py'
 app.include_router(router)
