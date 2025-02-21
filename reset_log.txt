@@ -1,5 +1,16 @@
-2025-03-02/21/25 17:03:44 - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-2025-03-02/21/25 17:03:44 - Added job "scheduled_reset" to job store "default"
-2025-03-02/21/25 17:03:44 - Scheduler started
-2025-04-02/21/25 17:04:00 - Running job "scheduled_reset (trigger: cron[minute='*'], next run at: 2025-02-21 17:04:00 EST)" (scheduled at 2025-02-21 17:04:00-05:00)
-2025-04-02/21/25 17:04:00 - Job "scheduled_reset (trigger: cron[minute='*'], next run at: 2025-02-21 17:05:00 EST)" executed successfully
+2025-02-21 17:39:23 - Deleted logs older than 30 days
+2025-02-21 17:39:23 - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-21 17:39:23 - Added job "scheduled_reset" to job store "default"
+2025-02-21 17:39:23 - Scheduler started
+2025-02-21 17:39:26 - Deleted logs older than 30 days
+2025-02-21 17:39:26 - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-21 17:39:26 - Added job "scheduled_reset" to job store "default"
+2025-02-21 17:39:26 - Scheduler started
+2025-02-21 17:40:21 - Deleted logs older than 30 days
+2025-02-21 17:40:21 - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-21 17:40:21 - Added job "scheduled_reset" to job store "default"
+2025-02-21 17:40:21 - Scheduler started
+2025-02-21 17:44:50 - Deleted logs older than 30 days
+2025-02-21 17:44:50 - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-02-21 17:44:50 - Added job "scheduled_reset" to job store "default"
+2025-02-21 17:44:50 - Scheduler started
