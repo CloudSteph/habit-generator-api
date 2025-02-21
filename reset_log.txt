@@ -1,0 +1,5 @@
+2025-03-02/21/25 17:03:44 - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-03-02/21/25 17:03:44 - Added job "scheduled_reset" to job store "default"
+2025-03-02/21/25 17:03:44 - Scheduler started
+2025-04-02/21/25 17:04:00 - Running job "scheduled_reset (trigger: cron[minute='*'], next run at: 2025-02-21 17:04:00 EST)" (scheduled at 2025-02-21 17:04:00-05:00)
+2025-04-02/21/25 17:04:00 - Job "scheduled_reset (trigger: cron[minute='*'], next run at: 2025-02-21 17:05:00 EST)" executed successfully
