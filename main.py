@@ -1,14 +1,14 @@
 """
 main.py - FastAPI entry point.
 """
-import os
 from fastapi import FastAPI
 from apscheduler.schedulers.background import BackgroundScheduler
-from database import SessionLocal
-import crud
-from routes import router
+from habit_tracker.database import SessionLocal
+import habit_tracker.crud as crud
+from habit_tracker.routes import router
 import logging
 from datetime import datetime, timedelta
+import os
 
 # Configure logging to write to a file
 logging.basicConfig(
