@@ -4,8 +4,8 @@ crud.py - Handles database operations (CRUD) for habits.
 
 import random
 from sqlalchemy.orm import Session
-from models import Habit
-from schemas import HabitCreate, HabitResponse
+from habit_tracker.models import Habit
+from habit_tracker.schemas import HabitCreate, HabitResponse
 from datetime import datetime, timedelta
 
 def create_habit(db: Session, habit_data: HabitCreate):

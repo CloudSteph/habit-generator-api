@@ -4,9 +4,9 @@ routes.py - Defines FastAPI routes for handling habit operations.
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from database import SessionLocal
-import crud
-import schemas
+from habit_tracker.database import SessionLocal
+import habit_tracker.crud as crud
+import habit_tracker.schemas as schemas
 
 router = APIRouter()
 

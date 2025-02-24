@@ -3,7 +3,7 @@ models.py - Defines the Habit model for the database.
 """
 
 from sqlalchemy import Column, Integer, String, Boolean
-from database import Base
+from habit_tracker.database import Base
 
 class Habit(Base):
     """
