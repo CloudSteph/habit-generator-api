@@ -1,5 +1,16 @@
+# Ignore environment files
 venv/
+api.env
+
+# Ignore Python cache files
 __pycache__/
+*.pyo
+*.pyd
+
+# Ignore database files
 *.sqlite3
 *.db
-.gitignore_global
+
+# Ignore log files
+logs/*.log
+logs/reset_log.txt
