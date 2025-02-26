@@ -1,8 +1,7 @@
 # Randomized Habit Generator API
+
 ## 📌 Overview
 The **Randomized Habit Generator API** built with FastAPI is desgined to help users build consistent habits by tracking progress, selecting habits based on streak priority, and resetting completed habits daily. It encourages routine adherence by increasing the likelihood of selecting frequently completed habits while maintaining an element of randomness.
-
----
 
 ## ⭐️ Features
 - **Habit CRUD Operations**: Create, retrieve, update, and delete habits.
@@ -10,8 +9,6 @@ The **Randomized Habit Generator API** built with FastAPI is desgined to help us
 - **Streak Tracking**: Track the current streak (number of consecutive days) for each habit.
 - **Random Habit Selection**: Fetch a random habit from your list of habits.
 - **Interactive API Docs**: FastAPI provides an interactive Swagger UI at /docs and OpenAPI JSON at /openapi.json and ReDoc at /redoc
-
----
 
 ## 🛠️ Technologies Used (Tech Stack)
 - Python: Used to develop the backend logic
@@ -21,8 +18,6 @@ The **Randomized Habit Generator API** built with FastAPI is desgined to help us
 - SQLAlchemy: An ORM (Object Relational Mapper) used for database interactions.
 - Pydantic: Used for data validation and parsing for API request and response models.
 
----
-
 ## Acknowledgements
 
 - **[FastAPI Documentation](https://fastapi.tiangolo.com/#example-upgrade)** for providing a comprehensive guide to building APIs.
@@ -31,8 +26,6 @@ The **Randomized Habit Generator API** built with FastAPI is desgined to help us
 - **[APScheduler](https://pypi.org/project/APScheduler/)** for guidance on scheduling tasks
 - **[Python](https://www.w3schools.com/python/default.asp)**
 - **[Pydantic](https://docs.pydantic.dev/latest/)** for simplifying data validation and serialization in FastAPI
-
----
 
 ## ⚙️ Setup & Installation 
 
@@ -76,9 +69,7 @@ Once the server is running, you can interact with the API using either the inter
 $ curl -X GET "http://127.0.0.1:8000/habits"
 ```
 
----
-
-# 📁 Project Structure
+## 📁 Project Structure
 ```
 habit-generator-api/ 
 │── main.py      	        # FastAPI entry point 
@@ -100,12 +91,11 @@ habit-generator-api/
 │── requirements.txt        # Lists Python dependencies required 
 │── README.md 		        # Project documentation
 ```
----
 
 ## API Endpoints
 The order of endpoints below are important because FastAPI processes them sequentially. Specific routes (like /habits/random) should come before dynamic routes (like /habits/{id}), otherwise, FastAPI may misinterpret random as well.
 
-![img5.png](projects_images/img5.png)
+![img5.png](project_images/img5.png)
 
 ## API Documentation
 
@@ -113,66 +103,70 @@ The order of endpoints below are important because FastAPI processes them sequen
 - Method: POST
 - Endpoint: /habits/
 - Description: Adds a new habit to the database.
+
 Example Request (JSON BODY):
-![img.png](projects_images/img.png)
+![img.png](project_images/img.png)
 
 **2️⃣ Get All Habits**
 - Method: GET
 - Endpoint: /habits/
 - Description: Retrieves a list of all habits.
+
 Example Response:
-![img1.png](projects_images/img1.png)
+![img1.png](project_images/img1.png)
 
 **3️⃣ Get a Random Habit**
 - Method: GET
 - Endpoint: /habits/random
 - Description: Returns a randomly selected habit, prioritizing habits with higher streaks.
+
 Example Response:
-![img2.png](projects_images/img2.png)
+![img2.png](project_images/img2.png)
 
 **4️⃣ Reset All Habits at Midnight**
 - Method: POST
 - Endpoint: /habits/reset
 - Description: Resets all habits by setting completed_today to false at midnight.
+
 Example Response:
-![img3.png](projects_images/img3.png)
+![img3.png](project_images/img3.png)
 
 **5️⃣ Mark Habit completed**
 - Method: PATCH
 - Endpoint: /habits/{habit_id}/complete
 - Description: Mark a habit as completed for today.
+
 Example Response:
-![img8.png](projects_images/img8.png)
+![img8.png](project_images/img8.png)
 
 **6️⃣ Retrieve a specific Habit**
 - Method: GET
 - Endpoint: /habits/{habit_id}
 - Description: Retrieve a specific habit by id
-![img9.png](projects_images/img9/png)
+
+![img9.png](project_images/img9.png)
 
 **7️⃣ Update an existing Habit**
 - Method: PUT
 - Endpoint: /habits/{habit_id}
 - Description: Update a specific habit by id
-![img10.png](projects_images/img10.png)
+
+![img10.png](project_images/img10.png)
 
 **8️⃣ Delete a habit**
 - Method: DELETE
 - Endpoint: /habits/{habit_id}
 - Description: Deletes a specific habit by id
-![img11.png](projects_images/img11.png)
 
----
+![img11.png](project_images/img11.png)
 
 ## FastAPI Documentation (Screenshots)
 
 **FastAPI UI (Swagger): 127.0.0.1:8000/docs**
-![img6.png](projects_images/img6.png)
+![img6.png](project_images/img6.png)
 
 **OpenAPI JSON: 127.0.0.1:8000/openapi.json**
-![img7.png](projects_images/img7.png)
-
----
+![img7.png](project_images/img7.png)
 
 ## Testing in Postman
 Since everything is set up locally, I tested the API using Postman by:
@@ -180,18 +174,12 @@ Since everything is set up locally, I tested the API using Postman by:
 2. **Sending GET, POST, PUT, PATCH** requests to validate responses.
 3. Checking the behavior of random habit selection and habit reset as well as other behaviors.
 
----
-
 ## Future Improvements
 - Add unit tests
-
----
 
 ## 👩🏻‍💻 Author
 
 Created by Stephanie Liew 🚀
-
----
 
 ## LICENSE
 
