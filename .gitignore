@@ -12,5 +12,6 @@ __pycache__/
 *.db
 
 # Ignore log files
+logs/
 logs/*.log
-
+logs/reset_log.txt
