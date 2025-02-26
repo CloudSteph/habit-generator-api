@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+
 print(f"Using database at: {os.path.abspath('data/habits.db')}")
 
 # Define the database URL (SQLite file-based database)
