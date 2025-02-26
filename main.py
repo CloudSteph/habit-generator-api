@@ -4,11 +4,10 @@ main.py - FastAPI entry point.
 from fastapi import FastAPI
 from apscheduler.schedulers.background import BackgroundScheduler
 from habit_tracker.database import SessionLocal
-import habit_tracker.crud as crud
+from habit_tracker.crud import reset_completed_today
 from habit_tracker.routes import router
-import logging
 from datetime import datetime, timedelta
-import os
+import logging, os, traceback
 
 # Configure logging to write to a file
 logging.basicConfig(
@@ -61,22 +60,14 @@ app = FastAPI(
 # Include habit routes from 'routes.py'
 app.include_router(router)
 
-# Initialize APScheduler()
-scheduler = BackgroundScheduler()
-
+# Scheduled task to reset all habits automatically
 def scheduled_reset():
-    """
-    Scheduled task to reset all habits every morning at 12:00 AM.
-    """
     db = SessionLocal()
-    try:
-        crud.reset_completed_today(db)
-        print("Habits reset for the new day!")
-    except Exception as e:
-        print(f"Error resetting habits: {e}")
-    finally: db.close()
+    reset_completed_today(db)
+    db.close()
 
-# Schedule the reset function to run daily at 12:00 AM
+# Initialize APScheduler() and Schedule the reset function to run daily at midnight
+scheduler = BackgroundScheduler()
 scheduler.add_job(scheduled_reset, "cron", hour=0, minute=0)
 scheduler.start()
 
@@ -86,3 +77,10 @@ def home():
     Root endpoint.
     """
     return {"message": "Habit Tracker API is running!"}
+
+def log_errors(exc: Exception, message: str = "An error occurred"):
+    """
+    Logs detailed error message for debugging and logs full stack trace
+    """
+    logging.error(f"{message}: {str(exc)}")
+    logging.error(traceback.format_exc())

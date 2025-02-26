@@ -2,16 +2,14 @@
 crud.py - Handles database operations (CRUD) for habits.
 """
 
-import random
 from sqlalchemy.orm import Session
 from habit_tracker.models import Habit
-from habit_tracker.schemas import HabitCreate, HabitResponse
+from habit_tracker.schemas import HabitCreate, HabitUpdate, HabitResponse
 from datetime import datetime, timedelta
+import random
 
+# Creates a new habit and saves it to the database.
 def create_habit(db: Session, habit_data: HabitCreate):
-    """
-    Creates a new habit and saves it to the database.
-    """
     new_habit = Habit(
         name=habit_data.name,
         description=habit_data.description,
@@ -24,94 +22,75 @@ def create_habit(db: Session, habit_data: HabitCreate):
     db.refresh(new_habit)
     return new_habit
 
+# Retrieves all habits from the database.
 def get_habits(db: Session):
-    """
-    Retrieves all habits from the database.
-    """
     return db.query(Habit).all()
 
+# Retrieves a specific habit by ID.
 def get_habit(db: Session, habit_id: int):
-    """
-    Retrieves a specific habit by ID.
-    """
     return db.query(Habit).filter(Habit.id == habit_id).first()
 
-def update_habit(db: Session, habit_id: int, habit_data: HabitCreate):
-    """
-    Updates a habit's details.
-    """
+# Retrieves a random habit based on streak priority
+def get_random_habit(db: Session):
+    habits = db.query(Habit).filter(Habit.completed_today == False).all()
+
+    print(f"Available habits before filtering: {db.query(Habit).all()}")
+    print(f"Available habits after filtering (completed_today=False): {habits}")
+
+    # If there are no habits, return None
+    if not habits:
+        print("No available habits!")
+        return None
+    
+    # Weight habits by streak (higher streak = higher selection chance)
+    weighted_habits = [habit for habit in habits for _ in range(habit.streak + 1)]
+
+    selected_habit = random.choice(weighted_habits)
+    print(f"Selected habit: {selected_habit}")
+    return selected_habit
+
+# Mark a habit as completed
+def complete_habit(db: Session, habit_id: int):
     habit = db.query(Habit).filter(Habit.id == habit_id).first()
-    if habit:
-        habit.name = habit_data.name
-        habit.description = habit_data.description
-        habit.frequency = habit_data.frequency
-        db.commit()
-        db.refresh(habit)
+
+    if not habit:
+        return None
+    
+    habit.completed_today = True
+    habit.streak += 1 # Increase streak on completion
+    db.commit()
+    db.refresh(habit)
     return habit
 
+# Update a habit (PUT request)
+def update_habit(db: Session, habit_id: int, habit_update: HabitUpdate):
+    habit = db.query(Habit).filter(Habit.id == habit_id).first()
+
+    if not habit:
+        return None
+    
+    habit.name = habit_update.name or habit.name
+    habit.description = habit_update.description or habit.description
+    habit.frequency = habit_update.frequency or habit.frequency
+
+    db.commit()
+    db.refresh(habit)
+    return habit
+
+# Deletes a habit from the database.
 def delete_habit(db: Session, habit_id: int):
-    """
-    Deletes a habit from the database.
-    """
     habit = db.query(Habit).filter(Habit.id == habit_id).first()
     if habit:
         db.delete(habit)
         db.commit()
     return habit
 
-def get_random_habit(db: Session) -> HabitResponse | None:
-    """
-    Retrieves a random habit, marks it as completed, and updates the streak.
-    - 'completed_today' is set to 'True'
-    - 'streak' is increased by 1
-    """
-
-    # Fetch all habits
-    habits = db.query(Habit).all()
-
-    # If there are no habits, return None
-    if not habits:
-        return None
-    
-    # Filter habits that have NOT been completed today
-    available_habits = [habit for habit in habits if not habit.completed_today]
-
-    # If all habits are completed today, allow selection from all habits
-    if not available_habits:
-        available_habits = habits
-
-    # Weighting logic: Higher weight for lower streaks and higher frequency
-    weighted_habits = []
-    for habit in available_habits:
-        weight = max(1, 5 - habit.streak) # Prioritize habits with lower streaks
-
-        if habit.frequency == "daily":
-            weight *= 3 # Daily habits appear more frequently
-        elif habit.frequency == "weekly":
-            weight *= 2 # weekly habits have medium priority
-        
-        weighted_habits.extend([habit] * weight) # Add habit multiple times for weighting 
-
-    # Randomly select one habit based on weight
-    selected_habit = random.choice(weighted_habits)
-
-    # Update the selected habit as completed and increase streak
-    selected_habit.completed_today = True
-    selected_habit.streak += 1
-
-    # Save changes to the database
-    db.commit()
-    db.refresh(selected_habit)
-
-    return selected_habit # Return updated habit
-
+# Reset 'completed_today' for all habits every midnight
 def reset_completed_today(db: Session):
-    """
-    Resets 'completed_today' to False for all habits every morning.
-    """
     try:
         db.query(Habit).update({"completed_today": False})
         db.commit()
+        return {"message": "All habits have been reset."}
     except Exception as e:
         db.rollback()
-        raise Exception(f"Database error during reset: {e}")
+        return {"error": str(e)}

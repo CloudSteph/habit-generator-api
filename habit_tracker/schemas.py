@@ -5,27 +5,26 @@ schemas.py - Defines Pydantic schemas for request validation and responses.
 from pydantic import BaseModel
 from typing import Optional
 
-class HabitBase(BaseModel):
-    """
-    Base schema defining common fields for a habit.
-    """
+# Schema for creating a Habit (Request Body)
+class HabitCreate(BaseModel):
     name: str
+    description: str
+    frequency: str
+
+# Schema for Updating a Habit (PUT Request)
+class HabitUpdate(BaseModel):
+    name: Optional[str] = None
     description: Optional[str] = None
-    frequency: str # e.g., "daily", "weekly"
+    frequency: Optional[str] = None
 
-class HabitCreate(HabitBase):
-    """
-    Schema for creating a new habit.
-    """
-    pass # Inherits fields from HabitBase
-
-class HabitResponse(HabitBase):
-    """
-    Schema for returning a habit response.
-    """
+# Schema for Returning a Habit (Response)
+class HabitResponse(BaseModel):
     id: int
+    name: str
+    description: str
+    frequency: str
     streak: int
     completed_today: bool
 
     class Config:
-        orm_mode = True # Enables SQLAlchemy compatibility
+        orm_mode = True # Enables SQLAlchemy compatibility (conversion from SQLAlchemy to Pydantic)
