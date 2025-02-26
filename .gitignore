@@ -13,4 +13,4 @@ __pycache__/
 
 # Ignore log files
 logs/*.log
-logs/reset_log.txt
+
